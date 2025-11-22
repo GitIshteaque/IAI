@@ -283,8 +283,8 @@ const Navigation = ({ isDark, toggleTheme }: { isDark: boolean, toggleTheme: () 
                 key={link.label}
                 onClick={() => scrollToSection(link.id)}
                 className={`px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 active:scale-95 ${activeSection === link.id
-                    ? 'text-neutral-900 dark:text-white bg-neutral-100 dark:bg-white/10'
-                    : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-white/5'
+                  ? 'text-neutral-900 dark:text-white bg-neutral-100 dark:bg-white/10'
+                  : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-white/5'
                   }`}
               >
                 {link.label}
@@ -1161,78 +1161,113 @@ const TicTacToeSection = () => {
   );
 };
 
-const ContactSection = () => (
-  <section id="contact" className="py-32 bg-neutral-900 text-white relative overflow-hidden scroll-mt-12">
-    <div className="absolute inset-0 bg-grid-pattern opacity-[0.05]"></div>
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-blue-500/20 blur-[120px]"></div>
+const ContactSection = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
 
-    <div className="container mx-auto px-6 relative z-10">
-      <div className="max-w-4xl mx-auto text-center">
-        <Reveal>
-          <h2 className="text-6xl md:text-8xl font-bold mb-8 tracking-tight">Let's Build</h2>
-          <p className="text-xl text-neutral-400 mb-12">
-            Ready to harness the power of AI and no-code platforms? <br />Initialize a consultation to discuss your parameters.
-          </p>
-        </Reveal>
+  const handleTransmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const subject = `Project Inquiry from ${formData.name}`;
+    const body = `Name: ${formData.name}%0D%0AEmail: ${formData.email}%0D%0A%0D%0AMessage:%0D%0A${formData.message}`;
+    window.location.href = `mailto:artiflex2003@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+  };
 
-        <Reveal delay={200}>
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 text-left">
-            <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  return (
+    <section id="contact" className="py-32 bg-neutral-900 text-white relative overflow-hidden scroll-mt-12">
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.05]"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-blue-500/20 blur-[120px]"></div>
+
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <Reveal>
+            <h2 className="text-6xl md:text-8xl font-bold mb-8 tracking-tight">Let's Build</h2>
+            <p className="text-xl text-neutral-400 mb-12">
+              Ready to harness the power of AI and no-code platforms? <br />Initialize a consultation to discuss your parameters.
+            </p>
+          </Reveal>
+
+          <Reveal delay={200}>
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 text-left">
+              <form className="space-y-8" onSubmit={handleTransmit}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <label className="text-xs font-mono uppercase tracking-widest text-neutral-500">Identification</label>
+                    <input
+                      type="text"
+                      placeholder="Name / Company"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full bg-transparent border-b border-white/20 py-4 text-lg focus:outline-none focus:border-blue-500 transition-colors"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-mono uppercase tracking-widest text-neutral-500">Coordinates</label>
+                    <input
+                      type="email"
+                      placeholder="Email Address"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full bg-transparent border-b border-white/20 py-4 text-lg focus:outline-none focus:border-blue-500 transition-colors"
+                      required
+                    />
+                  </div>
+                </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-mono uppercase tracking-widest text-neutral-500">Identification</label>
-                  <input type="text" placeholder="Name / Company" className="w-full bg-transparent border-b border-white/20 py-4 text-lg focus:outline-none focus:border-blue-500 transition-colors" />
+                  <label className="text-xs font-mono uppercase tracking-widest text-neutral-500">Mission Parameters</label>
+                  <textarea
+                    placeholder="Tell me about your project requirements..."
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    className="w-full bg-transparent border-b border-white/20 py-4 text-lg focus:outline-none focus:border-blue-500 transition-colors h-32 resize-none"
+                    required
+                  ></textarea>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-mono uppercase tracking-widest text-neutral-500">Coordinates</label>
-                  <input type="email" placeholder="Email Address" className="w-full bg-transparent border-b border-white/20 py-4 text-lg focus:outline-none focus:border-blue-500 transition-colors" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-mono uppercase tracking-widest text-neutral-500">Mission Parameters</label>
-                <textarea placeholder="Tell me about your project requirements..." className="w-full bg-transparent border-b border-white/20 py-4 text-lg focus:outline-none focus:border-blue-500 transition-colors h-32 resize-none"></textarea>
-              </div>
-              <button className="w-full bg-white text-black py-5 rounded-xl font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-white active:scale-[0.98] active:bg-blue-600 transition-all duration-200 shadow-lg">
-                Transmit Inquiry
-              </button>
-            </form>
+                <button type="submit" className="w-full bg-white text-black py-5 rounded-xl font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-white active:scale-[0.98] active:bg-blue-600 transition-all duration-200 shadow-lg">
+                  Transmit Inquiry
+                </button>
+              </form>
 
-            <div className="mt-12 pt-12 border-t border-white/10 grid grid-cols-1 md:grid-cols-2 gap-8">
-              <a href="mailto:ishteaqueahmed123@gmail.com" className="flex items-center gap-4 group hover:text-blue-400 transition-colors duration-300">
-                <div className="p-3 bg-white/5 rounded-lg group-hover:bg-white/10 transition-colors"><Mail size={20} /></div>
-                <div>
-                  <p className="text-xs font-mono text-neutral-500 mb-1">EMAIL</p>
-                  <p className="font-medium">ishteaqueahmed123@gmail.com</p>
-                </div>
-              </a>
-              <a href="tel:+918617273074" className="flex items-center gap-4 group hover:text-blue-400 transition-colors duration-300">
-                <div className="p-3 bg-white/5 rounded-lg group-hover:bg-white/10 transition-colors"><Phone size={20} /></div>
-                <div>
-                  <p className="text-xs font-mono text-neutral-500 mb-1">PHONE</p>
-                  <p className="font-medium">+91 - 8617273074</p>
-                </div>
-              </a>
-              <a href="https://github.com/GitIshteaque" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group hover:text-blue-400 transition-colors duration-300">
-                <div className="p-3 bg-white/5 rounded-lg group-hover:bg-white/10 transition-colors"><Github size={20} /></div>
-                <div>
-                  <p className="text-xs font-mono text-neutral-500 mb-1">GITHUB</p>
-                  <p className="font-medium">GitIshteaque</p>
-                </div>
-              </a>
-              <a href="https://www.instagram.com/i_ishteaque" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group hover:text-blue-400 transition-colors duration-300">
-                <div className="p-3 bg-white/5 rounded-lg group-hover:bg-white/10 transition-colors"><Instagram size={20} /></div>
-                <div>
-                  <p className="text-xs font-mono text-neutral-500 mb-1">INSTAGRAM</p>
-                  <p className="font-medium">@i_ishteaque</p>
-                </div>
-              </a>
+              <div className="mt-12 pt-12 border-t border-white/10 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <a href="mailto:artiflex2003@gmail.com" className="flex items-center gap-4 group hover:text-blue-400 transition-colors duration-300">
+                  <div className="p-3 bg-white/5 rounded-lg group-hover:bg-white/10 transition-colors"><Mail size={20} /></div>
+                  <div>
+                    <p className="text-xs font-mono text-neutral-500 mb-1">EMAIL</p>
+                    <p className="font-medium">artiflex2003@gmail.com</p>
+                  </div>
+                </a>
+                <a href="tel:+918617273074" className="flex items-center gap-4 group hover:text-blue-400 transition-colors duration-300">
+                  <div className="p-3 bg-white/5 rounded-lg group-hover:bg-white/10 transition-colors"><Phone size={20} /></div>
+                  <div>
+                    <p className="text-xs font-mono text-neutral-500 mb-1">PHONE</p>
+                    <p className="font-medium">+91 - 8617273074</p>
+                  </div>
+                </a>
+                <a href="https://github.com/GitIshteaque" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group hover:text-blue-400 transition-colors duration-300">
+                  <div className="p-3 bg-white/5 rounded-lg group-hover:bg-white/10 transition-colors"><Github size={20} /></div>
+                  <div>
+                    <p className="text-xs font-mono text-neutral-500 mb-1">GITHUB</p>
+                    <p className="font-medium">GitIshteaque</p>
+                  </div>
+                </a>
+                <a href="https://www.instagram.com/i_ishteaque" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group hover:text-blue-400 transition-colors duration-300">
+                  <div className="p-3 bg-white/5 rounded-lg group-hover:bg-white/10 transition-colors"><Instagram size={20} /></div>
+                  <div>
+                    <p className="text-xs font-mono text-neutral-500 mb-1">INSTAGRAM</p>
+                    <p className="font-medium">@i_ishteaque</p>
+                  </div>
+                </a>
+              </div>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const Footer = () => (
   <footer className="bg-neutral-950 text-neutral-500 py-12 border-t border-neutral-900 text-sm">
